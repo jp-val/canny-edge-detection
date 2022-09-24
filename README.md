@@ -3,19 +3,18 @@ Sobel and Canny edge detection from scratch. Featuring a simple convolution algo
 
 ## Examples
 
-Original Images
-
-<div style="display: flex; flex-direction: row;">
-	<span></span>
+<p align="center">
 	<img src="images/flowers.jpeg" height="180" style="margin-right: 15px" />
 	<img src="images/bearded_dragon.jpg" height="180"/>
-<div>
-Sobel Output
+</p>
+<p align="center">Original Images</p>
 
-<div style="display: flex; flex-direction: row;">
+<p align="center">
 	<img src="images/flowers_sobel.png" height="180" style="margin-right: 15px" />
 	<img src="images/bearded_dragon_sobel.png" height="180" />
-</div>
+</p>
+<p align="center">Sobel Output</p>
+
 Canny's Edge Thinning
 
 <div style="display: flex; flex-direction: row;">
