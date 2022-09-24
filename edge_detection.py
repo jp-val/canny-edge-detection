@@ -19,11 +19,11 @@ def convolve_v1(img, kernel):
 
 	return [[helper(i, j) for j in range(w)] for i in range(h)]
 
-# less slow version
+# 'Fast'-er version, still kinda slow for large applications.
 def convolve(image, kernel):
-
 	h, w = image.shape
 	k = kernel.shape[0] // 2
+	
 	kernel_sum = np.sum(kernel)
 	kernel_sum = kernel_sum if kernel_sum != 0 else 1
 
@@ -67,13 +67,14 @@ def sobel(image, return_angles=False):
 	else:
 		return g
 
-def canny_edge_detection(image, low_threshold=100, high_threshold=150):
+def canny_edge_detection(image, low_threshold=50, high_threshold=100):
 
 	edges, angles = sobel(image, return_angles=True)
 
 	angles = angles * 180. / np.pi
 	angles[angles < 0] += 180
 
+	# Makes the edges thin (one pixel thick).
 	def non_maximum_supression(image, angles):
 		h, w = image.shape
 
@@ -98,6 +99,7 @@ def canny_edge_detection(image, low_threshold=100, high_threshold=150):
 
 		return np.array([[helper(i, j, angles[i, j]) for j in range(1, w-1)] for i in range(1, h-1)])
 
+	# Removes weak edges that are not connected to strong edges.
 	def threshold_hysteresis(image):
 		new_img = np.zeros(image.shape)
 		visited = np.zeros(image.shape)
@@ -114,8 +116,8 @@ def canny_edge_detection(image, low_threshold=100, high_threshold=150):
 				
 				cx, cy = stack.pop()
 
-				new_img[cx, cy] = 255
-				visited[cx, cy] = 255
+				new_img[cx, cy] = image[cx, cy]
+				visited[cx, cy] = 1
 				
 				for d in dirs:
 					nx = cx + d[0]
@@ -133,32 +135,27 @@ def canny_edge_detection(image, low_threshold=100, high_threshold=150):
 	thin_edges = non_maximum_supression(edges, angles)
 	threshold = threshold_hysteresis(thin_edges)
 
-	return (thin_edges, threshold)
+	return (edges, thin_edges, threshold)
 
 if __name__ == '__main__':
 
 	# img_name = 'images/flowers.jpeg'
-	img_name = 'images/simple_flower.png'
+	img_name = 'images/bearded_dragon.jpg'
 
 	img = Image.open(img_name)
+	img = ImageOps.grayscale(img)
 	img.thumbnail((300, 300))
-
 	img = np.array(img)
 
-	# blured_img = blur_image(img)
+	sobel, thin_edges, threshold = canny_edge_detection(img)
 
-	# edges, angles = sobel(img, return_angles=True)
+	img_name = img_name.split('.')[0]
 
-	# img_edges = Image.fromarray(edges).convert('RGB')
-	# img_edges.save('sobel.png')
+	sobel_edges = Image.fromarray(sobel).convert('RGB')
+	sobel_edges.save(img_name + '_sobel.png')
 
-	thin_edges, threshold = canny_edge_detection(img)
+	img_thin_edges = Image.fromarray(thin_edges).convert('RGB')
+	img_thin_edges.save(img_name + '_thin_edges.png')
 
-	# img_thin_edges = Image.fromarray(thin_edges).convert('RGB')
-	# img_thin_edges.save('canny_thin_edges.png')
-
-	# img_threshold = Image.fromarray(threshold).convert('RGB')
-	# img_threshold.save('canny_threshold.png')
-
-	plt.imshow(threshold, cmap='gray')
-	plt.show()
+	img_threshold = Image.fromarray(threshold).convert('RGB')
+	img_threshold.save(img_name + '_threshold.png')

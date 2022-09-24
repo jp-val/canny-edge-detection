@@ -1,7 +1,24 @@
 # canny-edge-detection
-Sobel and Canny edge detection from scratch. Featuring convolution algorithm, gaussian blur, non-maximum supression, and threshold hysteresis.
+Sobel and Canny edge detection from scratch. Featuring a simple convolution algorithm, gaussian blur, non-maximum supression, and threshold hysteresis.
 
-![Original Image](images/simple_flower.png "Original Image"){width: 30%}
-![sobel output](images/sobel.png "Sobel Output")
-![Canny Thin Edges](images/canny_thin_edges.png "Canny's Edge Thining")
-![Canny Threshold Hysteresis](images/canny_threshold.png "Canny's Threshold Hysteresis")
+## Examples
+
+Original Images
+
+<img src="images/flowers.jpeg" height="180" style="margin-right: 15px" />
+<img src="images/bearded_dragon.jpg" height="180"/>
+
+Sobel Output
+
+<img src="images/flowers_sobel.png" height="180" style="margin-right: 15px" />
+<img src="images/bearded_dragon_sobel.png" height="180" />
+
+Canny's Edge Thinning
+
+<img src="images/flowers_thin_edges.png" height="180" style="margin-right: 15px" />
+<img src="images/bearded_dragon_thin_edges.png" height="180" />
+
+Canny's Threshold Hysteresis
+
+<img src="images/flowers_threshold.png" height="180" style="margin-right: 15px" />
+<img src="images/bearded_dragon_threshold.png" height="180" />
